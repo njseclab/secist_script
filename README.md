@@ -1,3 +1,6 @@
+
+链接:http://pan.baidu.com/s/1nvRsd1v 密码:ebpy  课程
+链接:http://pan.baidu.com/s/1dFGJeZB 密码:e252  彩蛋 短视频
 # secist_script
 ## v1.3
 # 增加了 web_delivery 整个模块自动化填写ip和端口
