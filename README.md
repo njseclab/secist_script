@@ -1,4 +1,5 @@
-
+使用你自己的责任。此工具仅用于教育目的。
+Use at your own responsibility. This tool is created for educational purposes only.
 #链接:http://pan.baidu.com/s/1nvRsd1v 密码:ebpy  课程
 #链接:http://pan.baidu.com/s/1dFGJeZB 密码:e252  彩蛋 短视频
 # secist_script
